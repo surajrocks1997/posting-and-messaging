@@ -45,10 +45,35 @@ export class PostsService {
       content,
     };
     this.http
-      .post<{ message: string }>('http://localhost:3000/api/posts', post)
+      .post<{ message: string; post: any }>(
+        'http://localhost:3000/api/posts',
+        post
+      )
+      .pipe(
+        map((responseData) => {
+          const { message, post } = responseData;
+          return {
+            message,
+            post: {
+              id: post._id,
+              title: post.title,
+              content: post.content,
+            },
+          };
+        })
+      )
       .subscribe((responseData) => {
-        console.log(responseData.message);
-        this.posts.push(post);
+        this.posts.push(responseData.post);
+        this.postsUpdated.next([...this.posts]);
+      });
+  }
+
+  deletePost(postId: string): void {
+    this.http
+      .delete<{ message: string }>('http://localhost:3000/api/posts/' + postId)
+      .subscribe(() => {
+        const updatedPosts = this.posts.filter((post) => post.id !== postId);
+        this.posts = updatedPosts;
         this.postsUpdated.next([...this.posts]);
       });
   }
