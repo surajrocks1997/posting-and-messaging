@@ -12,6 +12,7 @@ export const mimeType = (
 
       let header = '';
       let isValid = false;
+      // tslint:disable-next-line: prefer-for-of
       for (let i = 0; i < arr.length; i++) {
         header += arr[i].toString(16);
       }
