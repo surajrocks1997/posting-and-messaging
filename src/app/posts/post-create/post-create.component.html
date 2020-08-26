@@ -1,11 +1,11 @@
 <mat-card>
-  <form (submit)="onAddPost(postForm)" #postForm="ngForm">
+  <form (submit)="onSavePost(postForm)" #postForm="ngForm">
     <mat-form-field>
       <input
         matInput
         placeholder="Your Post Title Goes Here"
         type="text"
-        ngModel
+        [ngModel]="post?.title"
         name="title"
         required
         minlength="3"
@@ -18,7 +18,7 @@
         matInput
         placeholder="Your Post Content Goes Here"
         rows="3"
-        ngModel
+        [ngModel]="post?.content"
         name="content"
         required
         #content="ngModel"
@@ -27,7 +27,12 @@
         >Please Enter a Content to Post</mat-error
       >
     </mat-form-field>
-    <button style="margin-top: 1rem;" mat-raised-button color="accent" type="submit">
+    <button
+      style="margin-top: 1rem"
+      mat-raised-button
+      color="accent"
+      type="submit"
+    >
       Save Post
     </button>
   </form>

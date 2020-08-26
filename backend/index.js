@@ -47,12 +47,25 @@ app.post("/api/posts", async (req, res) => {
     const addedPost = await post.save();
     res.status(201).json({
       message: "Post Added Successfully",
-      post: addedPost
+      post: addedPost,
     });
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
   }
+});
+
+app.put("/api/posts/:id", async (req, res) => {
+  const post = new Post({
+    _id: req.body.id,
+    title: req.body.title,
+    content: req.body.content,
+  });
+  const result = await Post.updateOne({ _id: req.params.id }, post);
+  console.log(result);
+  res.status(200).json({
+    message: "Post Successfully Updated!",
+  });
 });
 
 app.delete("/api/posts/:id", async (req, res) => {
@@ -62,6 +75,15 @@ app.delete("/api/posts/:id", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
+  }
+});
+
+app.get("/api/posts/:id", async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if (post) {
+    res.status(200).json(post);
+  } else {
+    res.send(404).json({ message: "Post Not Found!!!" });
   }
 });
 

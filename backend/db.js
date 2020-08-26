@@ -1,19 +1,16 @@
 const mongoose = require("mongoose");
 
-const dbUri =
-  "mongodb+srv://suraj123:suraj123@cluster0.yjdgk.mongodb.net/demo?retryWrites=true&w=majority";
-
+const db =
+  "mongodb+srv://suraj123:HgGiXXdxLZSliZMT@cluster0.rm3bh.mongodb.net/postMessage?retryWrites=true&w=majority";
 const connectDB = async () => {
   try {
-    await mongoose.connect(dbUri, {
-      useUnifiedTopology: true,
+    await mongoose.connect(db, {
       useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
+      useUnifiedTopology: true,
     });
     console.log("MongoDB Connected");
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
     process.exit(1);
   }
 };
