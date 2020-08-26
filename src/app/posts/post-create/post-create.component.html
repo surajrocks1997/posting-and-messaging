@@ -8,7 +8,9 @@
         type="text"
         formControlName="title"
       />
-      <mat-error *ngIf="form.get('title').invalid">Please Enter a Post Title</mat-error>
+      <mat-error *ngIf="form.get('title').invalid"
+        >Please Enter a Post Title</mat-error
+      >
     </mat-form-field>
     <mat-form-field>
       <textarea
@@ -31,6 +33,9 @@
         Pick Image
       </button>
       <input type="file" #filePicker (change)="onImagePicked($event)" />
+    </div>
+    <div class="image-preview" *ngIf="imagePreview !== '' && imagePreview">
+      <img [src]="imagePreview" [alt]="form.value.title" />
     </div>
     <button
       style="margin-top: 1rem"
