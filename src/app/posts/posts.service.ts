@@ -58,13 +58,12 @@ export class PostsService {
       )
       .pipe(
         map((responseData) => {
-          const { message, post } = responseData;
           return {
-            message,
+            message: responseData.message,
             post: {
-              id: post._id,
-              title: post.title,
-              content: post.content,
+              id: responseData.post._id,
+              title: responseData.post.title,
+              content: responseData.post.content,
             },
           };
         })
