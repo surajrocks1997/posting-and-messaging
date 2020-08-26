@@ -18,12 +18,12 @@ const storage = multer.diskStorage({
     if (isValid) {
       error = null;
     }
-    cb(error, "backend/images");
+    cb(error, "./images");
   },
   filename: (req, file, cb) => {
     const name = file.originalname.toLowerCase().split(" ").join("-");
     const extension = MIME_TYPE_MAP[file.mimetype];
-    cb(null, name + "-" + Date.now() + "." + ext);
+    cb(null, name + "-" + Date.now() + "." + extension);
   },
 });
 
@@ -40,23 +40,27 @@ router.get("", async (req, res) => {
   }
 });
 
-router.post("", async (req, res) => {
-  const { title, content } = req.body;
-  const post = new Post({
-    title,
-    content,
-  });
-  try {
-    const addedPost = await post.save();
-    res.status(201).json({
-      message: "Post Added Successfully",
-      post: addedPost,
+router.post(
+  "",
+  multer({ storage: storage }).single("image"),
+  async (req, res) => {
+    const { title, content } = req.body;
+    const post = new Post({
+      title,
+      content,
     });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Server Error");
+    try {
+      const addedPost = await post.save();
+      res.status(201).json({
+        message: "Post Added Successfully",
+        post: addedPost,
+      });
+    } catch (error) {
+      console.log("ERROR: " + error.message);
+      res.status(500).send("Server Error");
+    }
   }
-});
+);
 
 router.put("/:id", async (req, res) => {
   const post = new Post({
