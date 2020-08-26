@@ -30,7 +30,7 @@
       >
         Pick Image
       </button>
-      <input type="file" #filePicker />
+      <input type="file" #filePicker (change)="onImagePicked($event)" />
     </div>
     <button
       style="margin-top: 1rem"
