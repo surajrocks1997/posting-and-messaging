@@ -44,16 +44,23 @@ router.post(
   "",
   multer({ storage: storage }).single("image"),
   async (req, res) => {
+    const url = req.protocol + "://" + req.get("host");
     const { title, content } = req.body;
     const post = new Post({
       title,
       content,
+      imagePath: url + "/images/" + req.file.filename,
     });
     try {
       const addedPost = await post.save();
       res.status(201).json({
         message: "Post Added Successfully",
-        post: addedPost,
+        post: {
+          id: addedPost._id,
+          title: addedPost.title,
+          content: addedPost.content,
+          imagePath: addedPost.imagePath,
+        },
       });
     } catch (error) {
       console.log("ERROR: " + error.message);

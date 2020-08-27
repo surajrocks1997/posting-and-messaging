@@ -1,9 +1,13 @@
 const express = require("express");
+const path = require("path");
+
 const app = express();
 
 const connectDB = require("./db");
 
 connectDB();
+
+app.use("/images", express.static(path.join("./images")));
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
