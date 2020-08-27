@@ -13,7 +13,7 @@ import { PageEvent } from '@angular/material/paginator';
 export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = [];
   isLoading = false;
-  totalPosts = 10;
+  totalPosts = 0;
   postsPerPage = 2;
   currentPage = 1;
   pageSizeOptions = [1, 2, 5, 10];
@@ -31,17 +31,22 @@ export class PostListComponent implements OnInit, OnDestroy {
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
     this.postsSub = this.postsService
       .getPostUpdateListener()
-      .subscribe((posts: Post[]) => {
-        this.posts = posts;
+      .subscribe((postData: { posts: Post[]; postCount: number }) => {
+        this.posts = postData.posts;
+        this.totalPosts = postData.postCount;
         this.isLoading = false;
       });
   }
 
   onDelete(postId: string): void {
-    this.postsService.deletePost(postId);
+    this.isLoading = true;
+    this.postsService.deletePost(postId).subscribe(() => {
+      this.postsService.getPosts(this.postsPerPage, this.currentPage);
+    });
   }
 
   onChangedpage(pageData: PageEvent): void {
+    this.isLoading = true;
     this.currentPage = pageData.pageIndex + 1;
     this.postsPerPage = pageData.pageSize;
     this.postsService.getPosts(this.postsPerPage, this.currentPage);
