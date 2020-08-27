@@ -27,5 +27,6 @@ app.use(express.json({ extended: false }));
 app.get("/", (req, res) => res.send("API RUNNING"));
 
 app.use("/api/posts", require("./routes/posts"));
+app.use("/api/user", require("./routes/user"));
 
 app.listen(3000, () => console.log("Listening on Port 3000"));
