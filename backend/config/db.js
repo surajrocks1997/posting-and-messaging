@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const config = require("config");
 
-const db =
-  "mongodb+srv://suraj123:s65M67iRhRTB5rqY@cluster0.rm3bh.mongodb.net/postMessage?retryWrites=true&w=majority";
+const db = config.get("mongoURI");
 const connectDB = async () => {
   try {
     await mongoose.connect(db, {

@@ -3,7 +3,7 @@ const path = require("path");
 
 const app = express();
 
-const connectDB = require("./db");
+const connectDB = require("./config/db");
 
 connectDB();
 
