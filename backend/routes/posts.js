@@ -96,17 +96,42 @@ router.put(
       content: req.body.content,
       imagePath: imagePath,
     });
-    const result = await Post.updateOne({ _id: req.params.id }, post);
-    res.status(200).json({
-      message: "Post Successfully Updated!",
-    });
+    try {
+      const result = await Post.updateOne(
+        { _id: req.params.id, creator: req.userData.userId },
+        post
+      );
+      if (result.nModified > 0) {
+        res.status(200).json({
+          message: "Post Successfully Updated!",
+        });
+      } else {
+        res.status(400).json({
+          message: "Denied",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({
+        message: "Server Error",
+      });
+    }
   }
 );
 
 router.delete("/:id", checkAuth, async (req, res) => {
   try {
-    await Post.deleteOne({ _id: req.params.id });
-    res.status(200).json({ message: "Post successfully Deleted" });
+    const result = await Post.deleteOne({
+      _id: req.params.id,
+      creator: req.userData.userId,
+    });
+    if (result.n > 0) {
+      res.status(200).json({ message: "Post successfully Deleted" });
+    } else {
+      res.status(400).json({
+        message: "Denied",
+      });
+    }
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Server Error");
