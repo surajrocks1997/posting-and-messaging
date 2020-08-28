@@ -54,6 +54,7 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({
       token,
+      expiresIn: 3600,
     });
   } catch (error) {
     res.status(401).json({
