@@ -9,7 +9,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
-  isLoading: false;
+  isLoading = false;
 
   constructor(private authserive: AuthService) {}
 
@@ -19,8 +19,8 @@ export class SignupComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     const { email, password } = form.value;
-
     this.authserive.createUser(email, password);
   }
 }

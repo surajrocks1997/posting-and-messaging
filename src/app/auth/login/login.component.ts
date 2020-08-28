@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  isLoading: false;
+  isLoading = false;
 
   constructor(private authService: AuthService) {}
 
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
     if (form.invalid) {
       return;
     }
+    this.isLoading = true;
     const { email, password } = form.value;
     this.authService.login(email, password);
   }
