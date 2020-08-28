@@ -8,10 +8,13 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+
+import { ErrorComponent } from './error/error.component';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private dialog: MatDialog) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -19,8 +22,11 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
-        alert(error.error.error.message);
+        let errorMessage = 'An unknown error occured';
+        if (error.error.message) {
+          errorMessage = error.error.message;
+        }
+        this.dialog.open(ErrorComponent, { data: { message: errorMessage } });
         return throwError(error);
       })
     );
