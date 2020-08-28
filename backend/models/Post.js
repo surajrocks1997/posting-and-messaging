@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const User = require("./User");
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -11,6 +12,11 @@ const postSchema = new mongoose.Schema({
   },
   imagePath: {
     type: String,
+    required: true,
+  },
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User,
     required: true,
   },
 });
