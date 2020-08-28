@@ -20,7 +20,7 @@ router.post("/signup", async (req, res) => {
     const result = await user.save();
     res.status(201).json({ message: "User Created", result });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(500).json({ message: "Email Already Exists" });
   }
 });
 

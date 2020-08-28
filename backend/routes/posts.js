@@ -45,7 +45,9 @@ router.get("", async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Server Error");
+    res.status(500).json({
+      message: "Failed. Please Try Again Later",
+    });
   }
 });
 
@@ -75,7 +77,9 @@ router.post(
       });
     } catch (error) {
       console.log("ERROR: " + error.message);
-      res.status(500).send("Server Error");
+      res.status(500).json({
+        message: "Server Error",
+      });
     }
   }
 );
@@ -141,10 +145,16 @@ router.delete("/:id", checkAuth, async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const post = await Post.findById(req.params.id);
-  if (post) {
-    res.status(200).json(post);
-  } else {
-    res.send(404).json({ message: "Post Not Found!!!" });
+  try {
+    if (post) {
+      res.status(200).json(post);
+    } else {
+      res.send(404).json({ message: "Post Not Found!!!" });
+    }
+  } catch (error) {
+    res.send(500).json({
+      message: "Server Error",
+    });
   }
 });
 
