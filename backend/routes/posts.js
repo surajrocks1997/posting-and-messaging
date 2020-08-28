@@ -60,6 +60,7 @@ router.post(
       title,
       content,
       imagePath: url + "/images/" + req.file.filename,
+      creator: req.userData.userId,
     });
     try {
       const addedPost = await post.save();
