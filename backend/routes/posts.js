@@ -95,6 +95,7 @@ router.put(
       title: req.body.title,
       content: req.body.content,
       imagePath: imagePath,
+      creator: req.userData.userId,
     });
     try {
       const result = await Post.updateOne(
